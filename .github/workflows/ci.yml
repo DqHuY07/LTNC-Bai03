@@ -1,0 +1,28 @@
+name: ci.yml
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Cài đặt JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: 'maven'
+
+    - run: mvn clean package
+
+    - name: upload .jar
+      uses: action/upload-artifact@v4
+      with:
+        name: app-jar
+        path: target/*.jar
